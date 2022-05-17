@@ -22,14 +22,14 @@ function App() {
     setItems(nextItems);
   };
 
-  const handleLoad = async () => {
-    const { reviews } = await getRewviews();
+  const handleLoad = async (orderQuery) => {
+    const { reviews } = await getRewviews(orderQuery);
     setItems(reviews);
   };
 
   useEffect(() => {
-    handleLoad();
-  }, []);
+    handleLoad(order);
+  }, [order]);
 
   return (
     <div>
