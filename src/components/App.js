@@ -17,6 +17,8 @@ function App() {
   const [hasNext, setHasNext] = useState(false);
   // loading state
   const [isLoading, setIsLoading] = useState(false);
+  // loadingError state
+  const [loadingError, setLoadingError] = useState(null);
 
   // 오름차순 정렬
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
@@ -39,9 +41,10 @@ function App() {
     let result;
     try {
       setIsLoading(true);
+      setLoadingError(null);
       result = await getRewviews(options);
     } catch (error) {
-      console.log(error.message);
+      setLoadingError(error);
       return;
     } finally {
       setIsLoading(false);
@@ -81,6 +84,7 @@ function App() {
           더 보기
         </button>
       )}
+      {loadingError?.message && <span>{loadingError.message}</span>}
     </div>
   );
 }
