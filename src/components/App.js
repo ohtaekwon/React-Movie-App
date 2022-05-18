@@ -13,9 +13,9 @@ function App() {
   const [order, setOrder] = useState("createdAt");
   // offset state
   const [offset, setOffset] = useState(0);
-  // hasNext
+  // hasNext state
   const [hasNext, setHasNext] = useState(false);
-  // loading
+  // loading state
   const [isLoading, setIsLoading] = useState(false);
 
   // 오름차순 정렬
