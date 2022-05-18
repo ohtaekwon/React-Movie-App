@@ -6,12 +6,19 @@ import { getRewviews } from "../api";
 const Limit = 6;
 
 function App() {
+  // State
+  // items
   const [items, setItems] = useState([]);
+  // 최신순
   const [order, setOrder] = useState("createdAt");
   // offset state
   const [offset, setOffset] = useState(0);
   // hasNext
   const [hasNext, setHasNext] = useState(false);
+  // loading
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 오름차순 정렬
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
   // 최신순
   const handleNewstClick = () => {
@@ -29,11 +36,23 @@ function App() {
   };
   // 처음 출력
   const handleLoad = async (options) => {
-    const { reviews, paging } = await getRewviews(options);
+    let result;
+    try {
+      setIsLoading(true);
+      result = await getRewviews(options);
+    } catch (error) {
+      console.log(error.message);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+
+    const { reviews, paging } = result;
+
     if (options.offset === 0) {
       setItems(reviews);
     } else {
-      setItems([...items, ...reviews]);
+      setItems((prevItems) => [...prevItems, ...reviews]);
     }
     setOffset(options.offset + reviews.length); // 6
     setHasNext(paging.hasNext);
@@ -57,7 +76,11 @@ function App() {
       </div>
       <ReviewList items={sortedItems} onDelete={handleDelete} />
       {/* <button onClick={handleLoadClick}>불러오기</button> */}
-      {hasNext && <button onClick={handLoadMore}>더 보기</button>}
+      {hasNext && (
+        <button disabled={isLoading} onClick={handLoadMore}>
+          더 보기
+        </button>
+      )}
     </div>
   );
 }
