@@ -2,14 +2,15 @@
 import ReviewList from "./ReviewList";
 import { useEffect, useState } from "react";
 import { getRewviews } from "../api";
+import ReviewForm from "./ReviewForm";
 
-const Limit = 6;
+const Limit = 6; // 6개씩 출력 고정값
 
 function App() {
   // State
-  // items
+  // items State
   const [items, setItems] = useState([]);
-  // 최신순
+  // 정렬 State : 처음엔 최신순(createdAt)
   const [order, setOrder] = useState("createdAt");
   // offset state
   const [offset, setOffset] = useState(0);
@@ -58,7 +59,7 @@ function App() {
       setItems((prevItems) => [...prevItems, ...reviews]);
     }
     setOffset(options.offset + reviews.length); // 6
-    setHasNext(paging.hasNext);
+    setHasNext(paging.hasNext); // 다음 페이지가 있으면 True
   };
 
   // 더 불러오기
@@ -77,6 +78,7 @@ function App() {
         <button onClick={handleNewstClick}>최신순</button>
         <button onClick={handleBestClick}>평점순</button>
       </div>
+      <ReviewForm />
       <ReviewList items={sortedItems} onDelete={handleDelete} />
       {/* <button onClick={handleLoadClick}>불러오기</button> */}
       {hasNext && (
