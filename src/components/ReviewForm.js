@@ -27,6 +27,7 @@ function ReviewForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log("여기입니다. :", name, value);
     handleChange(name, value);
     // console.log(values);
   };
